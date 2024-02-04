@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.jayptl.one_to_one_mapping_exp.dto.AssignDto;
 import com.jayptl.one_to_one_mapping_exp.dto.EmployeeDto;
+import com.jayptl.one_to_one_mapping_exp.dto.EmployeeWithoutConfInfo;
 import com.jayptl.one_to_one_mapping_exp.service.EmployeeService;
 
 @RestController
@@ -23,7 +24,7 @@ public class EmployeeController {
     private EmployeeService employeeService;
 
     @GetMapping("/all")
-    public List<EmployeeDto> getAllEmployees() {
+    public List<EmployeeWithoutConfInfo> getAllEmployees() {
         return employeeService.getAllEmployees();
     }
 
@@ -32,7 +33,7 @@ public class EmployeeController {
         return employeeService.getEmployeeById(employeeId);
     }
 
-    @PostMapping({"/add","/update"})
+    @PostMapping("/add")
     public EmployeeDto addNewEmployee(@RequestBody EmployeeDto employeeDto) {
         return employeeService.addNewEmployee(employeeDto);
     }

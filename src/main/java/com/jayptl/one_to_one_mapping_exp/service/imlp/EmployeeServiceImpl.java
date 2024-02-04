@@ -8,7 +8,9 @@ import org.springframework.stereotype.Service;
 
 import com.jayptl.one_to_one_mapping_exp.dto.AssignDto;
 import com.jayptl.one_to_one_mapping_exp.dto.EmployeeDto;
+import com.jayptl.one_to_one_mapping_exp.dto.EmployeeWithoutConfInfo;
 import com.jayptl.one_to_one_mapping_exp.dto.IdCardDto;
+import com.jayptl.one_to_one_mapping_exp.dto.IdCardWithouConfInfo;
 import com.jayptl.one_to_one_mapping_exp.exception.EntityNotFoundException;
 import com.jayptl.one_to_one_mapping_exp.model.Employee;
 import com.jayptl.one_to_one_mapping_exp.model.IdCard;
@@ -49,7 +51,7 @@ public class EmployeeServiceImpl implements EmployeeService {
     }
 
     @Override
-    public List<EmployeeDto> getAllEmployees() {
+    public List<EmployeeWithoutConfInfo> getAllEmployees() {
         List<Employee> employees = employeeRepository.findAll();
         List<Employee> activeEmployees = new ArrayList<Employee>();
         for (Employee employee : employees) {
@@ -58,9 +60,9 @@ public class EmployeeServiceImpl implements EmployeeService {
             }
         }
 
-        List<EmployeeDto> employeeDtos = new ArrayList<EmployeeDto>();
+        List<EmployeeWithoutConfInfo> employeeDtos = new ArrayList<EmployeeWithoutConfInfo>();
         for (Employee employee : activeEmployees) {
-               employeeDtos.add(employeeToEmpoyeeDto(employee));
+               employeeDtos.add(emplyoeeToEmployeeWithoutConfInfo(employee));
             }
         return employeeDtos;
     }
@@ -98,8 +100,15 @@ public class EmployeeServiceImpl implements EmployeeService {
             IdCardDto idCardDto = new IdCardDto(employee.getIdCard().getJobTitle(), employee.getIdCard().getDepartmentName(),employee.getIdCard().getConfidentialInfo());
             return new EmployeeDto(employee.getEmployeeName(), employee.getBloodGroup(), idCardDto);
         }
-        IdCardDto idCardDto = new IdCardDto(null, null,"");
-        return new EmployeeDto(employee.getEmployeeName(), employee.getBloodGroup(), idCardDto);
+        return new EmployeeDto(employee.getEmployeeName(), employee.getBloodGroup(), null);
+    }
+
+    private EmployeeWithoutConfInfo emplyoeeToEmployeeWithoutConfInfo(Employee employee){
+        if (employee.getIdCard()!=null) {
+            IdCardWithouConfInfo idCardWithouConfInfo = new IdCardWithouConfInfo(employee.getIdCard().getJobTitle(), employee.getIdCard().getDepartmentName());
+            return new EmployeeWithoutConfInfo(employee.getEmployeeName(), employee.getBloodGroup(), idCardWithouConfInfo);
+        }
+        return new EmployeeWithoutConfInfo(employee.getEmployeeName(),employee.getBloodGroup(),null);
     }
 
 }

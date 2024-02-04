@@ -32,7 +32,7 @@ public class IdCardController {
         return idCardService.getAllIdCards();
     }
 
-    @PostMapping({"/add","/update"})
+    @PostMapping("/add")
     public IdCardWithouConfInfo addNewCard(@RequestBody IdCardDto idCardDto) {
         return idCardService.addNewIdCard(idCardDto);
     }
