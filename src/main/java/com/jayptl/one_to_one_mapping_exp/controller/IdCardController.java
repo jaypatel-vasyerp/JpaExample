@@ -11,7 +11,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.jayptl.one_to_one_mapping_exp.model.IdCard;
+import com.jayptl.one_to_one_mapping_exp.dto.IdCardDto;
+import com.jayptl.one_to_one_mapping_exp.dto.IdCardWithouConfInfo;
 import com.jayptl.one_to_one_mapping_exp.service.IdCardService;
 
 @RestController
@@ -22,18 +23,18 @@ public class IdCardController {
     private IdCardService idCardService;
 
     @GetMapping("id/{cardId}")
-    public IdCard getIdCardById(@PathVariable(name = "cardId") long cardId) {
+    public IdCardDto getIdCardById(@PathVariable(name = "cardId") long cardId) {
         return idCardService.getIdCardById(cardId);
     }
 
     @GetMapping("/all")
-    public List<IdCard> getMethodName() {
+    public List<IdCardWithouConfInfo> getMethodName() {
         return idCardService.getAllIdCards();
     }
 
-    @PostMapping("/add")
-    public IdCard addNewCard(@RequestBody IdCard idCard) {
-        return idCardService.addNewIdCard(idCard);
+    @PostMapping({"/add","/update"})
+    public IdCardWithouConfInfo addNewCard(@RequestBody IdCardDto idCardDto) {
+        return idCardService.addNewIdCard(idCardDto);
     }
 
     @DeleteMapping("/delete/{cardId}")

@@ -2,15 +2,16 @@ package com.jayptl.one_to_one_mapping_exp.service;
 
 import java.util.List;
 
-import com.jayptl.one_to_one_mapping_exp.model.IdCard;
+import com.jayptl.one_to_one_mapping_exp.dto.IdCardDto;
+import com.jayptl.one_to_one_mapping_exp.dto.IdCardWithouConfInfo;
 
 public interface IdCardService {
 
-    List<IdCard> getAllIdCards();
+    List<IdCardWithouConfInfo> getAllIdCards();
 
-    IdCard getIdCardById(long cardId);
+    IdCardDto getIdCardById(long cardId);
 
-    IdCard addNewIdCard(IdCard idCard);
+    IdCardWithouConfInfo addNewIdCard(IdCardDto idCard);
 
     boolean deleteIdCardById(long cardId);
 

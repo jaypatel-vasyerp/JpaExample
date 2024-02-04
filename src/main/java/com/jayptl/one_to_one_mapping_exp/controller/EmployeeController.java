@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.jayptl.one_to_one_mapping_exp.dto.AssignDto;
-import com.jayptl.one_to_one_mapping_exp.model.Employee;
+import com.jayptl.one_to_one_mapping_exp.dto.EmployeeDto;
 import com.jayptl.one_to_one_mapping_exp.service.EmployeeService;
 
 @RestController
@@ -23,18 +23,18 @@ public class EmployeeController {
     private EmployeeService employeeService;
 
     @GetMapping("/all")
-    public List<Employee> getAllEmployees() {
+    public List<EmployeeDto> getAllEmployees() {
         return employeeService.getAllEmployees();
     }
 
     @GetMapping("/id/{employeeId}")
-    public Employee getEmployeeById(@PathVariable(name = "employeeId") long employeeId) {
+    public EmployeeDto getEmployeeById(@PathVariable(name = "employeeId") long employeeId) {
         return employeeService.getEmployeeById(employeeId);
     }
 
-    @PostMapping("/add")
-    public Employee addNewEmployee(@RequestBody Employee employee) {
-        return employeeService.addNewEmployee(employee);
+    @PostMapping({"/add","/update"})
+    public EmployeeDto addNewEmployee(@RequestBody EmployeeDto employeeDto) {
+        return employeeService.addNewEmployee(employeeDto);
     }
 
     @PostMapping("/assignid")
@@ -42,7 +42,7 @@ public class EmployeeController {
         return employeeService.assignIdCard(assignDto);
     }
 
-    @DeleteMapping("/id/{employeeId}")
+    @DeleteMapping("/delete/id/{employeeId}")
     public String deleteEmployeeById(@PathVariable(name = "employeeId") long employeeId) {
         if (employeeService.deleteEmployeeById(employeeId)) {
             return "Deleted";

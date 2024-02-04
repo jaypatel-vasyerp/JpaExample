@@ -7,9 +7,7 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class IdCardDto {
-
+public class IdCardWithouConfInfo {
     private String jobTitle;
     private String departmentName;
-    private String confidentialInfo;
 }

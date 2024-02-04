@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class EmployeeDto {
     
-    private String name;
+    private String employeeName;
     private String bloodGroup;
     private IdCardDto idCardDto;
 }
