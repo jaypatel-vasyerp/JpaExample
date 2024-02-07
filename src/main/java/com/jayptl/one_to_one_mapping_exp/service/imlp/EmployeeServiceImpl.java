@@ -29,7 +29,8 @@ public class EmployeeServiceImpl implements EmployeeService {
 
     @Override
     public EmployeeDto getEmployeeById(long employeeId) {
-        Employee employee = employeeRepository.findById(employeeId).orElseThrow(()-> new EntityNotFoundException("\"Employee With Id " + employeeId + "Not Found"));
+        Employee employee = employeeRepository.findById(employeeId)
+                .orElseThrow(() -> new EntityNotFoundException("\"Employee With Id " + employeeId + "Not Found"));
         if (employee.isDeleted()) {
             return new EmployeeDto();
         }
@@ -44,7 +45,8 @@ public class EmployeeServiceImpl implements EmployeeService {
 
     @Override
     public boolean deleteEmployeeById(long employeeId) {
-        Employee employee = employeeRepository.findById(employeeId).orElseThrow(() -> new EntityNotFoundException("Employee with Id "+ employeeId +"Does Not Exists"));
+        Employee employee = employeeRepository.findById(employeeId)
+                .orElseThrow(() -> new EntityNotFoundException("Employee with Id " + employeeId + "Does Not Exists"));
         employee.setDeleted(true);
         employeeRepository.save(employee);
         return true;
@@ -62,8 +64,8 @@ public class EmployeeServiceImpl implements EmployeeService {
 
         List<EmployeeWithoutConfInfo> employeeDtos = new ArrayList<EmployeeWithoutConfInfo>();
         for (Employee employee : activeEmployees) {
-               employeeDtos.add(emplyoeeToEmployeeWithoutConfInfo(employee));
-            }
+            employeeDtos.add(emplyoeeToEmployeeWithoutConfInfo(employee));
+        }
         return employeeDtos;
     }
 
@@ -88,27 +90,30 @@ public class EmployeeServiceImpl implements EmployeeService {
         return "Employee With Id " + assignDto.getEmployeeId() + "Does Not Exists";
     }
 
-    private Employee employeeDtoToEmployee(EmployeeDto employeeDto){
-        if (employeeDto.getIdCardDto()!=null) {
-            return new Employee(0,false, employeeDto.getEmployeeName(), employeeDto.getBloodGroup(),null);
+    private Employee employeeDtoToEmployee(EmployeeDto employeeDto) {
+        if (employeeDto.getIdCardDto() != null) {
+            return new Employee(0, false, employeeDto.getEmployeeName(), employeeDto.getBloodGroup(), null);
         }
-        return new Employee(0,false, employeeDto.getEmployeeName(), employeeDto.getBloodGroup(),null);
+        return new Employee(0, false, employeeDto.getEmployeeName(), employeeDto.getBloodGroup(), null);
     }
 
-    private EmployeeDto employeeToEmpoyeeDto(Employee employee){
-        if (employee.getIdCard()!=null) {
-            IdCardDto idCardDto = new IdCardDto(employee.getIdCard().getJobTitle(), employee.getIdCard().getDepartmentName(),employee.getIdCard().getConfidentialInfo());
+    private EmployeeDto employeeToEmpoyeeDto(Employee employee) {
+        if (employee.getIdCard() != null) {
+            IdCardDto idCardDto = new IdCardDto(employee.getIdCard().getJobTitle(),
+                    employee.getIdCard().getDepartmentName(), employee.getIdCard().getConfidentialInfo());
             return new EmployeeDto(employee.getEmployeeName(), employee.getBloodGroup(), idCardDto);
         }
         return new EmployeeDto(employee.getEmployeeName(), employee.getBloodGroup(), null);
     }
 
-    private EmployeeWithoutConfInfo emplyoeeToEmployeeWithoutConfInfo(Employee employee){
-        if (employee.getIdCard()!=null) {
-            IdCardWithouConfInfo idCardWithouConfInfo = new IdCardWithouConfInfo(employee.getIdCard().getJobTitle(), employee.getIdCard().getDepartmentName());
-            return new EmployeeWithoutConfInfo(employee.getEmployeeName(), employee.getBloodGroup(), idCardWithouConfInfo);
+    private EmployeeWithoutConfInfo emplyoeeToEmployeeWithoutConfInfo(Employee employee) {
+        if (employee.getIdCard() != null) {
+            IdCardWithouConfInfo idCardWithouConfInfo = new IdCardWithouConfInfo(employee.getIdCard().getJobTitle(),
+                    employee.getIdCard().getDepartmentName());
+            return new EmployeeWithoutConfInfo(employee.getEmployeeName(), employee.getBloodGroup(),
+                    idCardWithouConfInfo);
         }
-        return new EmployeeWithoutConfInfo(employee.getEmployeeName(),employee.getBloodGroup(),null);
+        return new EmployeeWithoutConfInfo(employee.getEmployeeName(), employee.getBloodGroup(), null);
     }
 
 }
