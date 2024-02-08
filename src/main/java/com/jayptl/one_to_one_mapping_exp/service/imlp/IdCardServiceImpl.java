@@ -38,9 +38,9 @@ public class IdCardServiceImpl implements IdCardService {
     @Override
     public IdCardDto getIdCardById(long cardId) {
         IdCard idCard = idCardRepository.findById(cardId)
-                .orElseThrow(() -> new EntityNotFoundException("Entity With Id " + cardId + "Not Found"));
+                .orElseThrow(() -> new EntityNotFoundException("Entity With Id " + cardId + " Not Found"));
         if (idCard.isDeleted()) {
-            return new IdCardDto(null, null, null);
+            return new IdCardDto();
         }
         return idCardToIdCardDto(idCard);
     }

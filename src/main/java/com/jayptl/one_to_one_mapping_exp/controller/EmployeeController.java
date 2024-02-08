@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.jayptl.one_to_one_mapping_exp.dto.AssignDto;
 import com.jayptl.one_to_one_mapping_exp.dto.EmployeeDto;
 import com.jayptl.one_to_one_mapping_exp.dto.EmployeeWithoutConfInfo;
+import com.jayptl.one_to_one_mapping_exp.dto.ResponseDto;
 import com.jayptl.one_to_one_mapping_exp.service.EmployeeService;
 
 @RestController
@@ -24,31 +25,71 @@ public class EmployeeController {
     private EmployeeService employeeService;
 
     @GetMapping("/all")
-    public List<EmployeeWithoutConfInfo> getAllEmployees() {
-        return employeeService.getAllEmployees();
+    public ResponseDto getAllEmployees() {
+        List<EmployeeWithoutConfInfo> data = employeeService.getAllEmployees();
+        ResponseDto responseDto = new ResponseDto();
+
+        responseDto.setStatus(200);
+        responseDto.setMessage("Ok");
+        responseDto.setData(data);
+
+        return responseDto;
     }
 
     @GetMapping("/id/{employeeId}")
-    public EmployeeDto getEmployeeById(@PathVariable(name = "employeeId") long employeeId) {
-        return employeeService.getEmployeeById(employeeId);
+    public ResponseDto getEmployeeById(@PathVariable(name = "employeeId") long employeeId) {
+        EmployeeDto employeeDto = employeeService.getEmployeeById(employeeId);
+        ResponseDto responseDto = new ResponseDto();
+        if (employeeDto != null) {
+            responseDto.setStatus(200);
+            responseDto.setMessage("Ok");
+            responseDto.setData(employeeDto);
+        } else {
+
+            // if employee's isDeleted flag is true
+
+            responseDto.setStatus(404);
+            responseDto.setMessage("Emplyoee is Deleted");
+            responseDto.setData(employeeDto);
+        }
+        return responseDto;
     }
 
     @PostMapping("/add")
-    public EmployeeDto addNewEmployee(@RequestBody EmployeeDto employeeDto) {
-        return employeeService.addNewEmployee(employeeDto);
+    public ResponseDto addNewEmployee(@RequestBody EmployeeDto employeeDto) {
+        EmployeeDto employee = employeeService.addNewEmployee(employeeDto);
+        ResponseDto responseDto = new ResponseDto();
+        responseDto.setMessage("Ok");
+        responseDto.setStatus(200);
+        responseDto.setData(employee);
+        return responseDto;
     }
 
     @PostMapping("/assignid")
-    public String assignIdCard(@RequestBody AssignDto assignDto) {
-        return employeeService.assignIdCard(assignDto);
+    public ResponseDto assignIdCard(@RequestBody AssignDto assignDto) {
+        String data = employeeService.assignIdCard(assignDto);
+        ResponseDto responseDto = new ResponseDto();
+        if (data.equals("Success")) {
+            responseDto.setStatus(200);
+            responseDto.setMessage("Ok");
+            responseDto.setData(data);
+        } else {
+
+            // if idcard's or employee's isDeleted flag is true then
+            responseDto.setStatus(404);
+            responseDto.setMessage("Error");
+            responseDto.setData(data);
+        }
+        return responseDto;
     }
 
     @DeleteMapping("/delete/id/{employeeId}")
-    public String deleteEmployeeById(@PathVariable(name = "employeeId") long employeeId) {
-        if (employeeService.deleteEmployeeById(employeeId)) {
-            return "Deleted";
-        } else
-            return "Id Still Exists";
+    public ResponseDto deleteEmployeeById(@PathVariable(name = "employeeId") long employeeId) {
+        ResponseDto responseDto = new ResponseDto();
+        responseDto.setMessage("Ok");
+        responseDto.setStatus(200);
+        responseDto.setData(employeeService.deleteEmployeeById(employeeId));
+        return responseDto;
     }
 
 }

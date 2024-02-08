@@ -30,7 +30,7 @@ public class EmployeeServiceImpl implements EmployeeService {
     @Override
     public EmployeeDto getEmployeeById(long employeeId) {
         Employee employee = employeeRepository.findById(employeeId)
-                .orElseThrow(() -> new EntityNotFoundException("\"Employee With Id " + employeeId + "Not Found"));
+                .orElseThrow(() -> new EntityNotFoundException("\"Employee With Id " + employeeId + " Not Found"));
         if (employee.isDeleted()) {
             return new EmployeeDto();
         }
@@ -46,7 +46,7 @@ public class EmployeeServiceImpl implements EmployeeService {
     @Override
     public boolean deleteEmployeeById(long employeeId) {
         Employee employee = employeeRepository.findById(employeeId)
-                .orElseThrow(() -> new EntityNotFoundException("Employee with Id " + employeeId + "Does Not Exists"));
+                .orElseThrow(() -> new EntityNotFoundException("Employee with Id " + employeeId + " Does Not Exists"));
         employee.setDeleted(true);
         employeeRepository.save(employee);
         return true;
@@ -81,13 +81,13 @@ public class EmployeeServiceImpl implements EmployeeService {
                         employeeRepository.save(employee);
                         return "Success";
                     }
-                    return "Card With Id " + assignDto.getCardId() + "Is Deleted";
+                    return "Card With Id " + assignDto.getCardId() + " Is Deleted";
                 }
-                return "Card With Id " + assignDto.getCardId() + "Does Not Exists";
+                throw new EntityNotFoundException("Card With Id " + assignDto.getCardId() + " Does Not Exists");
             }
-            return "Employee With Id " + assignDto.getEmployeeId() + "Is Deleted";
+            return "Employee With Id " + assignDto.getEmployeeId() + " Is Deleted";
         }
-        return "Employee With Id " + assignDto.getEmployeeId() + "Does Not Exists";
+        throw new EntityNotFoundException("Employee With Id " + assignDto.getEmployeeId() + " Does Not Exists");
     }
 
     private Employee employeeDtoToEmployee(EmployeeDto employeeDto) {
