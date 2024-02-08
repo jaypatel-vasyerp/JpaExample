@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.jayptl.one_to_one_mapping_exp.dto.ResponseDto;
 import com.jayptl.one_to_one_mapping_exp.service.FileService;
 
 @RestController
@@ -26,12 +27,20 @@ public class FileController {
     }
 
     @PostMapping("/upload")
-    public ResponseEntity<String> uploadFileOrAppendFile(@RequestParam MultipartFile file, @RequestParam String mode) {
-        return ResponseEntity.ok(fileService.uploadFile(file, mode));
+    public ResponseDto uploadFileOrAppendFile(@RequestParam MultipartFile file, @RequestParam String mode) {
+        ResponseDto responseDto = new ResponseDto();
+        responseDto.setMessage("Ok");
+        responseDto.setStatus(200);
+        responseDto.setData(fileService.uploadFile(file, mode));
+        return responseDto;
     }
 
     @DeleteMapping("/delete")
-    public ResponseEntity<String> deleteFileByName(@RequestParam String filename) {
-        return ResponseEntity.ok(fileService.deleteFileByName(filename));
+    public ResponseDto deleteFileByName(@RequestParam String filename) {
+        ResponseDto responseDto = new ResponseDto();
+        responseDto.setData(fileService.deleteFileByName(filename));
+        responseDto.setStatus(200);
+        responseDto.setMessage("Ok");
+        return responseDto;
     }
 }
